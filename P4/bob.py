@@ -30,6 +30,7 @@ else:
 #####################
 
 # Recibo el mensaje, junto con el nonce del AES CTR, y el mac del HMAC
+<<<<<<< HEAD
 
 mensaje_cifrado = socketserver.recibir()
 nA_recibido = socketserver.recibir()
@@ -55,11 +56,37 @@ except ValueError:
 mensaje_json = json.loads(mensaje_descifrado.decode("utf-8"))
 print("El remitente es " + mensaje_json[0])
 print("El nonce nA es " + mensaje_json[1])
+=======
+    
+    mensaje_cif = socketserver.recibir()
+    nA = socketserver.recibir()
+    nA = bytearray.fromhex(nA)
+    mac = socketserver.recibir()
+
+# Descifro el mensaje
+    
+    mensaje = funciones_aes.descifrarAES_CTR(mensaje_cif, K1, nA)
+
+# Verifico el mac
+    
+    h = HMAC.new(K2, digestmod=SHA256)
+    h.update(mensaje)
+    try:
+        h.hexverify(mac)
+        print("MAC correcto")
+    except ValueError:
+        print("MAC incorrecto")
+
+# Visualizo la identidad del remitente
+        
+        print(json.loads(mensaje)[0])
+>>>>>>> 05df069274a2e161a8eb5b611a1e2245ef4c58d1
 
 #####################
 #####################
 
 # Genero el json con el nombre de Bob, el de Alice y el nonce nA
+<<<<<<< HEAD
 
 mensaje = []
 mensaje.append("Bob")
@@ -82,11 +109,31 @@ hmac.update(mensaje_cifrado)
 socketserver.enviar(mensaje_cifrado)
 socketserver.enviar(nA_recibido)
 socketserver.enviar(hmac.digest())
+=======
+        
+    jStr = json.dumps(["Bob","Alice",nA.hex()])
+
+# Cifro el json con K1
+    
+    mensaje_cif = funciones_aes.cifrarAES_CTR(jStr, K1, nA)
+
+# Aplico HMAC
+    
+    h = HMAC.new(K2, digestmod=SHA256)
+    h.update(jStr)
+
+# Envío el json cifrado junto con el nonce del AES CTR, y el mac del HMAC
+    
+    socketserver.enviar(mensaje_cif)
+    socketserver.enviar(nA)
+    socketserver.enviar(h.hexdigest())
+>>>>>>> 05df069274a2e161a8eb5b611a1e2245ef4c58d1
 
 #####################
 #####################
 
 # Recibo el primer mensaje de Alice
+<<<<<<< HEAD
 
 mensaje_cifrado = socketserver.recibir()
 nA_recibido = socketserver.recibir()
@@ -144,6 +191,59 @@ mensaje_json = json.loads(mensaje_descifrado.decode("utf-8"))
 print("El remitente es " + mensaje_json[0])
 # print("El destinatario es " + mensaje_json[1])
 # print("El nonce nA es " + mensaje_json[2])
+=======
+    
+    mensaje_cif = socketserver.recibir()
+    nA = socketserver.recibir()
+    nA = bytearray.fromhex(nA)
+    mac = socketserver.recibir()
+
+# Descifro el mensaje
+        
+    mensaje = funciones_aes.descifrarAES_CTR(mensaje_cif, K1, nA)
+
+
+# Verifico el mac
+        
+    h = HMAC.new(K2, digestmod=SHA256)
+    h.update(mensaje)
+    try:
+        h.hexverify(mac)
+        print("MAC correcto")
+    except ValueError:
+        print("MAC incorrecto")
+
+# Muestro el mensaje
+            
+    print(json.loads(mensaje)[0])
+
+
+# Recibo el segundo mensaje de Alice
+    
+    mensaje_cif = socketserver.recibir()
+    nA = socketserver.recibir()
+    nA = bytearray.fromhex(nA)
+    mac = socketserver.recibir()
+
+# Descifro el mensaje
+
+    mensaje = funciones_aes.descifrarAES_CTR(mensaje_cif, K1, nA)
+
+
+# Verifico el mac
+    
+    h = HMAC.new(K2, digestmod=SHA256)
+    h.update(mensaje)
+    try:
+        h.hexverify(mac)
+        print("MAC correcto")
+    except ValueError:
+        print("MAC incorrecto")
+
+# Muestro el mensaje
+            
+    print(json.loads(mensaje)[0])
+>>>>>>> 05df069274a2e161a8eb5b611a1e2245ef4c58d1
 
 
 # Cierro el socket
