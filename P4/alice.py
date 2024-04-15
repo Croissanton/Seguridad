@@ -68,6 +68,8 @@ socketclient.enviar(hmac.digest())
 
 # Recibo el mensaje, junto con el nonce del AES CTR, y el mac del HMAC
 
+socketclient.escuchar()
+
 mensaje_cifrado = socketclient.recibir()
 nA_recibido = socketclient.recibir()
 mac_recibido = socketclient.recibir()
