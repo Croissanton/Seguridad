@@ -46,7 +46,7 @@ json_mensaje = json.dumps(mensaje)
 
 # Cifro el json con K1
 
-aes_cifrado = funciones_aes.iniciarAES_CTR_cifrado(K1)
+aes_cifrado, nonce_aes = funciones_aes.iniciarAES_CTR_cifrado(K1)
 cifrado = funciones_aes.cifrarAES_CTR(aes_cifrado, json_mensaje.encode("utf-8"))
 
 
@@ -59,7 +59,7 @@ hmac.update(cifrado)
 # Envío el json cifrado junto con el nonce del AES CTR, y el mac del HMAC
 
 socketclient.enviar(cifrado)
-socketclient.enviar(nA)
+socketclient.enviar(nonce_aes)
 socketclient.enviar(hmac.digest())
 
 
@@ -92,7 +92,7 @@ except ValueError:
 # Visualizo la identidad del remitente y compruebo si los campos enviados son los mismo que los recibidos
 
 mensaje_recibido = json.loads(mensaje_descifrado.decode("utf-8"))
-if mensaje_recibido[0] == "Alice" and mensaje_recibido[1] == "Bob" and mensaje_recibido[2] == nA.hex():
+if mensaje_recibido[0] == "Bob" and mensaje_recibido[1] == "Alice" and mensaje_recibido[2] == nA.hex():
     print("El mensaje es correcto")
 else:
     print("El mensaje no es correcto")
@@ -121,7 +121,7 @@ hmac.update(cifrado)
 # Envío el json cifrado junto con el nonce del AES CTR, y el mac del HMAC
 
 socketclient.enviar(cifrado)
-socketclient.enviar(nA.hex())
+socketclient.enviar(nonce_aes)
 socketclient.enviar(hmac.digest())
 
 
@@ -145,7 +145,7 @@ hmac.update(cifrado)
 # Envío el json cifrado junto con el nonce del AES CTR, y el mac del HMAC
 
 socketclient.enviar(cifrado)
-socketclient.enviar(nA.hex())
+socketclient.enviar(nonce_aes)
 socketclient.enviar(hmac.digest())
 
 
