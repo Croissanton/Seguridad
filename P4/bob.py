@@ -31,8 +31,6 @@ else:
 
 # Recibo el mensaje, junto con el nonce del AES CTR, y el mac del HMAC
 
-socketserver.escuchar()
-
 mensaje_cifrado = socketserver.recibir()
 nA_recibido = socketserver.recibir()
 mac_recibido = socketserver.recibir()
@@ -90,8 +88,6 @@ socketserver.enviar(hmac.digest())
 
 # Recibo el primer mensaje de Alice
 
-socketserver.escuchar()
-
 mensaje_cifrado = socketserver.recibir()
 nA_recibido = socketserver.recibir()
 mac_recibido = socketserver.recibir()
@@ -121,8 +117,6 @@ print("El mensaje es " + mensaje_json[0])
 
 
 # Recibo el segundo mensaje de Alice
-
-socketserver.escuchar()
 
 mensaje_cifrado = socketserver.recibir()
 nA_recibido = socketserver.recibir()
